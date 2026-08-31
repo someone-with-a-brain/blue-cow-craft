@@ -332,7 +332,7 @@ function Index() {
               A home server built to last
             </h2>
           </div>
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <FeatureCard icon="⛏" title="Survival SMP">
               Genuine survival with friendly PvP opt-in. Keep your spawn gear,
               lose what you care about.
@@ -341,10 +341,7 @@ function Index() {
               Weekly building contests, treasure hunts, and boss raids run by a
               staff team that shows up.
             </FeatureCard>
-            <FeatureCard icon="⚑" title="Land Claims">
-              Claim your plot and it stays yours. Grief-proofing is on by
-              default, so sleep easy.
-            </FeatureCard>
+
             <FeatureCard icon="↻" title="Seasons & Resets">
               Fresh worlds every few months. Your world-blocks carry over as a
               keepsake each season.
