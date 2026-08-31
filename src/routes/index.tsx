@@ -26,8 +26,19 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const SERVER_IP = "play.bluecowsmp.net";
-const DISCORD_URL = "https://discord.gg/bluecowsmp";
+const SERVER_IP = "bluecow.ice.fo";
+const DISCORD_URL = "https://discord.gg/nkCMqKrzZa";
+
+function useServerStatus() {
+  const fetchStatus = useServerFn(getServerStatus);
+  return useQuery({
+    queryKey: ["server-status"],
+    queryFn: () => fetchStatus(),
+    refetchInterval: 60_000,
+    refetchOnWindowFocus: true,
+  });
+}
+
 
 function CopyIpButton() {
 const [copied, setCopied] = useState(false);
