@@ -90,6 +90,47 @@ const [copied, setCopied] = useState(false);
   );
 }
 
+function StatusPill() {
+  const { data, isPending } = useServerStatus();
+  const online = data?.online ?? false;
+  const dot = online ? "bg-glow-400" : "bg-gold-400";
+
+  return (
+    <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full bg-ocean-900/80 px-4 py-1.5 ring-1 ring-glow-500/25 sm:gap-3">
+      <span className="relative flex size-2.5">
+        {online && (
+          <span
+            className={`bc-glow absolute inline-flex size-full rounded-full ${dot} opacity-75`}
+          />
+        )}
+        <span
+          className={`relative inline-flex size-2.5 rounded-full ${dot}`}
+        />
+      </span>
+      <span className="font-mono text-base text-foam-100 sm:text-lg">
+        {isPending
+          ? "checking players…"
+          : `${data?.players ?? 0} / ${data?.max ?? 0} players online`}
+      </span>
+      <span className="hidden h-4 w-px bg-gold-500/40 sm:block" />
+      <span className="font-mono text-base text-glow-300 sm:text-lg">
+        {isPending ? "Status: …" : online ? "Status: Online" : "Status: Offline"}
+      </span>
+    </div>
+  );
+}
+
+function OnlineNowStat() {
+  const { data, isPending } = useServerStatus();
+  return (
+    <StatCard
+      value={isPending ? "…" : String(data?.players ?? 0)}
+      label="Online Now"
+    />
+  );
+}
+
+
 function StatCard({ value, label }: { value: string; label: string }) {
   return (
     <div className="rounded-xl bg-ocean-900 px-5 py-5 text-center ring-1 ring-gold-500/15">
