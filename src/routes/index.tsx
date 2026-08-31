@@ -30,9 +30,9 @@ const SERVER_IP = "play.bluecowsmp.net";
 const DISCORD_URL = "https://discord.gg/bluecowsmp";
 
 function CopyIpButton() {
-  const [copied, setCopied] = useState(false);
+const [copied, setCopied] = useState(false);
 
-const copyIp = async () => {
+  const copyIp = async () => {
     let copied = false;
     try {
       if (navigator.clipboard?.writeText) {
