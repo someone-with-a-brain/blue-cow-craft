@@ -263,10 +263,11 @@ function Index() {
 
           {/* IP pill + copy */}
           <div className="mt-10 flex flex-col items-center gap-4">
-            <div className="bc-pulse inline-flex items-center gap-3 rounded-lg bg-ocean-800 px-6 py-4 ring-1 ring-glow-500/40">
-              <span className="font-mono text-2xl tracking-wide text-glow-300 md:text-3xl">
+            <div className="bc-pulse inline-flex max-w-full flex-wrap items-center justify-center gap-3 rounded-lg bg-ocean-800 px-4 py-4 ring-1 ring-glow-500/40 sm:px-6">
+              <span className="font-mono text-xl tracking-wide break-all text-glow-300 sm:text-2xl md:text-3xl">
                 {SERVER_IP}
               </span>
+
               <CopyIpButton />
             </div>
             <StatusPill />
