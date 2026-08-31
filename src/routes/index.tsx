@@ -228,19 +228,8 @@ function Index() {
               </span>
               <CopyIpButton />
             </div>
-            <div className="inline-flex items-center gap-3 rounded-full bg-ocean-900/80 px-4 py-1.5 ring-1 ring-glow-500/25">
-              <span className="relative flex size-2.5">
-                <span className="bc-glow absolute inline-flex size-full rounded-full bg-glow-400 opacity-75" />
-                <span className="relative inline-flex size-2.5 rounded-full bg-glow-400" />
-              </span>
-              <span className="font-mono text-lg text-foam-100">
-                128 / 250 players online
-              </span>
-              <span className="h-4 w-px bg-gold-500/40" />
-              <span className="font-mono text-lg text-glow-300">
-                Status: Online
-              </span>
-            </div>
+            <StatusPill />
+
           </div>
 
           {/* Discord CTA */}
