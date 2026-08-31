@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { getServerStatus } from "@/lib/server-status.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
