@@ -313,7 +313,7 @@ function Index() {
       <section className="relative">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid grid-cols-2 gap-3 py-8 md:grid-cols-4">
-            <StatCard value="128" label="Online Now" />
+            <OnlineNowStat />
             <StatCard value="99.6%" label="Uptime" />
             <StatCard value="04" label="Seasons" />
             <StatCard value="2.1k" label="Members" />
