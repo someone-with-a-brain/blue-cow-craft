@@ -32,10 +32,25 @@ const DISCORD_URL = "https://discord.gg/bluecowsmp";
 function CopyIpButton() {
   const [copied, setCopied] = useState(false);
 
-  const copyIp = async () => {
+const copyIp = async () => {
+    let copied = false;
     try {
-      await navigator.clipboard.writeText(SERVER_IP);
+      if (navigator.clipboard?.writeText) {
+        await Promise.race([
+          navigator.clipboard.writeText(SERVER_IP),
+          new Promise((_, reject) =>
+            window.setTimeout(
+              () => reject(new Error("clipboard timeout")),
+              800,
+            ),
+          ),
+        ]);
+        copied = true;
+      }
     } catch {
+      copied = false;
+    }
+    if (!copied) {
       const textarea = document.createElement("textarea");
       textarea.value = SERVER_IP;
       textarea.style.position = "fixed";
