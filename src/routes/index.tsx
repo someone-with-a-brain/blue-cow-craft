@@ -487,10 +487,11 @@ function Index() {
             </h2>
           </div>
           <div className="space-y-3">
-            <FaqItem question="Is there a whitelist?" defaultOpen>
-              Yes, we keep a soft whitelist to stay friendly. Apply on Discord
-              with a quick intro and we review within a day or two.
+            <FaqItem question="Do I need to be whitelisted?" defaultOpen>
+              No whitelist at all. The server is open to everyone — add the IP,
+              hit connect, and you are in.
             </FaqItem>
+
             <FaqItem question="What version do I need?">
               Java Edition 1.20 and up. We run vanilla first, so if you can
               play singleplayer, you can play here.
