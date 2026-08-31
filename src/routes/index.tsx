@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { getServerStatus } from "@/lib/server-status.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,8 +29,19 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const SERVER_IP = "play.bluecowsmp.net";
-const DISCORD_URL = "https://discord.gg/bluecowsmp";
+const SERVER_IP = "bluecow.ice.fo";
+const DISCORD_URL = "https://discord.gg/nkCMqKrzZa";
+
+function useServerStatus() {
+  const fetchStatus = useServerFn(getServerStatus);
+  return useQuery({
+    queryKey: ["server-status"],
+    queryFn: () => fetchStatus(),
+    refetchInterval: 60_000,
+    refetchOnWindowFocus: true,
+  });
+}
+
 
 function CopyIpButton() {
 const [copied, setCopied] = useState(false);
@@ -75,6 +89,47 @@ const [copied, setCopied] = useState(false);
     </button>
   );
 }
+
+function StatusPill() {
+  const { data, isPending } = useServerStatus();
+  const online = data?.online ?? false;
+  const dot = online ? "bg-glow-400" : "bg-gold-400";
+
+  return (
+    <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full bg-ocean-900/80 px-4 py-1.5 ring-1 ring-glow-500/25 sm:gap-3">
+      <span className="relative flex size-2.5">
+        {online && (
+          <span
+            className={`bc-glow absolute inline-flex size-full rounded-full ${dot} opacity-75`}
+          />
+        )}
+        <span
+          className={`relative inline-flex size-2.5 rounded-full ${dot}`}
+        />
+      </span>
+      <span className="font-mono text-base text-foam-100 sm:text-lg">
+        {isPending
+          ? "checking players…"
+          : `${data?.players ?? 0} / ${data?.max ?? 0} players online`}
+      </span>
+      <span className="hidden h-4 w-px bg-gold-500/40 sm:block" />
+      <span className="font-mono text-base text-glow-300 sm:text-lg">
+        {isPending ? "Status: …" : online ? "Status: Online" : "Status: Offline"}
+      </span>
+    </div>
+  );
+}
+
+function OnlineNowStat() {
+  const { data, isPending } = useServerStatus();
+  return (
+    <StatCard
+      value={isPending ? "…" : String(data?.players ?? 0)}
+      label="Online Now"
+    />
+  );
+}
+
 
 function StatCard({ value, label }: { value: string; label: string }) {
   return (
@@ -208,25 +263,15 @@ function Index() {
 
           {/* IP pill + copy */}
           <div className="mt-10 flex flex-col items-center gap-4">
-            <div className="bc-pulse inline-flex items-center gap-3 rounded-lg bg-ocean-800 px-6 py-4 ring-1 ring-glow-500/40">
-              <span className="font-mono text-2xl tracking-wide text-glow-300 md:text-3xl">
+            <div className="bc-pulse inline-flex max-w-full flex-wrap items-center justify-center gap-3 rounded-lg bg-ocean-800 px-4 py-4 ring-1 ring-glow-500/40 sm:px-6">
+              <span className="font-mono text-xl tracking-wide break-all text-glow-300 sm:text-2xl md:text-3xl">
                 {SERVER_IP}
               </span>
+
               <CopyIpButton />
             </div>
-            <div className="inline-flex items-center gap-3 rounded-full bg-ocean-900/80 px-4 py-1.5 ring-1 ring-glow-500/25">
-              <span className="relative flex size-2.5">
-                <span className="bc-glow absolute inline-flex size-full rounded-full bg-glow-400 opacity-75" />
-                <span className="relative inline-flex size-2.5 rounded-full bg-glow-400" />
-              </span>
-              <span className="font-mono text-lg text-foam-100">
-                128 / 250 players online
-              </span>
-              <span className="h-4 w-px bg-gold-500/40" />
-              <span className="font-mono text-lg text-glow-300">
-                Status: Online
-              </span>
-            </div>
+            <StatusPill />
+
           </div>
 
           {/* Discord CTA */}
@@ -269,7 +314,7 @@ function Index() {
       <section className="relative">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid grid-cols-2 gap-3 py-8 md:grid-cols-4">
-            <StatCard value="128" label="Online Now" />
+            <OnlineNowStat />
             <StatCard value="99.6%" label="Uptime" />
             <StatCard value="04" label="Seasons" />
             <StatCard value="2.1k" label="Members" />
@@ -288,7 +333,7 @@ function Index() {
               A home server built to last
             </h2>
           </div>
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <FeatureCard icon="⛏" title="Survival SMP">
               Genuine survival with friendly PvP opt-in. Keep your spawn gear,
               lose what you care about.
@@ -297,10 +342,7 @@ function Index() {
               Weekly building contests, treasure hunts, and boss raids run by a
               staff team that shows up.
             </FeatureCard>
-            <FeatureCard icon="⚑" title="Land Claims">
-              Claim your plot and it stays yours. Grief-proofing is on by
-              default, so sleep easy.
-            </FeatureCard>
+
             <FeatureCard icon="↻" title="Seasons & Resets">
               Fresh worlds every few months. Your world-blocks carry over as a
               keepsake each season.
@@ -446,10 +488,11 @@ function Index() {
             </h2>
           </div>
           <div className="space-y-3">
-            <FaqItem question="Is there a whitelist?" defaultOpen>
-              Yes, we keep a soft whitelist to stay friendly. Apply on Discord
-              with a quick intro and we review within a day or two.
+            <FaqItem question="Do I need to be whitelisted?" defaultOpen>
+              No whitelist at all. The server is open to everyone — add the IP,
+              hit connect, and you are in.
             </FaqItem>
+
             <FaqItem question="What version do I need?">
               Java Edition 1.20 and up. We run vanilla first, so if you can
               play singleplayer, you can play here.
